@@ -1,17 +1,22 @@
+// This is only for testing React based authentication using both
+// local jwt and google jwt strategy
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
-//require('./services/auth/passport');
+// Load user model
+require('./models/common/User');
 
+// Load Routes
 const users = require('./routes/api/users');
 const auth = require('./routes/auth');
 
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// Load Keys
+const keys = require('./config/keys');
+
 // DB config
 const db = require('./config/keys').mongoURI;
 mongoose
@@ -22,14 +27,20 @@ mongoose
   .then(() => console.log(`Logged into MLab URI = ${db}`))
   .catch(err => console.log('Error Mongo : ' + err));
 
-// ================= PASSPORT MIDDLEWARE ========================
+// Start express as app.
+
+const app = express();
+
 app.use(passport.initialize());
-// Passport Config - JWT strategy for local email-password & Google
 require('./config/passport')(passport);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //======================ROUTERS=================================
 app.use('/api/users', users);
 app.use('/auth', auth);
+
 //=============== Server STATIC ASSETS if in production ========
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

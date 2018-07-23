@@ -19,7 +19,7 @@ const BaandaID = require('../../models/common/BaandaID');
 // @desc    Login user & return JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
-  //console.log('Got to POST login req:' + JSON.stringify(req.body));
+  console.log('Got to POST login req:' + JSON.stringify(req.body));
   const { errors, isValid } = validateLoginInput(req.body);
   // Check validations
   if (!isValid) {

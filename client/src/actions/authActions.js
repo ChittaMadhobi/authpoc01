@@ -46,7 +46,7 @@ export const googleLoginUser = () => dispatch => {
   console.log('Inside  googleLoginUser');
 
   axios
-    .get('/api/users/google')
+    .get('/auth/google')
     .then(res => console.log('res:' + JSON.stringify(res.data)))
     .catch(err => console.log('err: ' + JSON.stringify(err.response)));
 };
